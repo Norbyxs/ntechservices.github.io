@@ -1,0 +1,65 @@
+<?php 
+  session_start();
+  include 'php/db.php';
+  $unique_id = $_SESSION['unique_id'];
+  if(empty($unique_id))
+  {
+      header ("Location: login.php");
+  } 
+  $qry = mysqli_query($conn, "SELECT * FROM users WHERE unique_id = '{$unique_id}'");
+  if(mysqli_num_rows($qry) > 0){
+    $row = mysqli_fetch_assoc($qry);
+    if($row){
+      $_SESSION['verification_status'] = $row['verification_status'];
+      if($row['verification_status'] == 'Verified')
+      {
+        header ("Location: index.php");
+      } 
+  }
+  }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>NTech-services ~Verifikácia</title>
+         <!--/Meta tagy -->
+        <meta charset="UTF-8">
+        <meta name="description" content="Webstránka Regisrácia">
+        <meta name="keywords" content="HTML, CSS, JavaScript, PHP">
+        <meta name="author" content="Takáč Norbert">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--//Meta tagy -->
+    
+      <!--/Scripty pre iconov -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!--//Scripty pre iconov -->
+        
+        <!--/CSS -->
+        <link rel="stylesheet" href="css/vytvorenie-konta.css"/>
+        <link rel="stylesheet" href="css/overenie-konta.css">
+        <!--//CSS -->
+      </head>
+    <body>
+        <!-- form start -->
+        <div class="form" style="text-align: center;">
+            <h2>Overenie vášho účtu</h2>
+            <p>Poslali sme vám e-mailom štvormiestny overovácí kód, prosím zadajte nižšie uvedený kód a potvrďte svoju e-mailovú adresu.</p>
+            <form action=""autocomplete="off">
+              <div class="error-text">Chyba</div>
+                <div class="fields_input">
+                  <input type="number" name="otp1" class="otp_field" placeholder="0" min="0" max="9" required onpaste="return false">
+                  <input type="number" name="otp2" class="otp_field" placeholder="0" min="0" max="9" required onpaste="return false">
+                  <input type="number" name="otp3" class="otp_field" placeholder="0" min="0" max="9" required onpaste="return false">
+                  <input type="number" name="otp4" class="otp_field" placeholder="0" min="0" max="9" required onpaste="return false">
+              </div>
+              <div class="submit">
+              <input type="button" name="resend" class="resend_btn" value="Poslať ešte raz">
+            <input type="submit" value="Poslať kód" class="button">
+          </div>
+          </form>
+          </div>
+    <script src="js/overenie.js"></script>
+    </body>
+</html>
